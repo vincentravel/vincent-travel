@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import { loginSchema } from '../../lib/schemas';
 import api from '../../lib/api';
 import { useAuthStore } from '../../store/authStore';
@@ -12,6 +13,7 @@ export default function AdminLoginPage() {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
   const [serverError, setServerError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -75,12 +77,23 @@ export default function AdminLoginPage() {
 
             <div>
               <label className="text-sm font-medium text-brand-black/70">Contraseña</label>
-              <input
-                type="password"
-                {...register('password')}
-                className="mt-1 w-full rounded-xl border border-brand-violet/20 px-4 py-2.5 outline-none focus:border-brand-magenta"
-                placeholder="••••••••"
-              />
+              <div className="relative mt-1">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('password')}
+                  className="w-full rounded-xl border border-brand-violet/20 px-4 py-2.5 pr-11 outline-none focus:border-brand-magenta"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((s) => !s)}
+                  className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-brand-black/40 hover:text-brand-black/70"
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
               )}
