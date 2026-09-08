@@ -45,8 +45,21 @@ const SERVICES = [
 
 export default function Services() {
   return (
-    <section id="servicios" className="bg-brand-black py-24">
-      <div className="mx-auto max-w-6xl px-5">
+    <section id="servicios" className="relative overflow-hidden bg-brand-gradient py-24">
+      <div className="pointer-events-none absolute inset-0 opacity-25">
+        <div className="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-white blur-3xl" />
+        <div className="absolute -bottom-32 -right-16 h-[28rem] w-[28rem] rounded-full bg-brand-magenta blur-3xl" />
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
+          backgroundSize: '22px 22px',
+          color: '#ffffff',
+        }}
+      />
+
+      <div className="relative mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="Servicios"
           title="Un viaje para cada momento"
@@ -69,7 +82,7 @@ export default function Services() {
                   href={buildWhatsAppLink(WHATSAPP_MESSAGES.general)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex h-full flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-7 transition-all hover:border-brand-magenta/50 hover:bg-white/10"
+                  className="group flex h-full flex-col gap-4 rounded-2xl border border-white/10 bg-black/20 p-7 backdrop-blur-sm transition-all hover:border-brand-magenta/50 hover:bg-black/30"
                 >
                   <motion.div
                     whileHover={{ scale: 1.12, rotate: 6 }}
@@ -84,7 +97,7 @@ export default function Services() {
               ) : (
                 <Link
                   to={`/paquetes?categoria=${s.category}`}
-                  className="group flex h-full flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-7 transition-all hover:border-brand-magenta/50 hover:bg-white/10"
+                  className="group flex h-full flex-col gap-4 rounded-2xl border border-white/10 bg-black/20 p-7 backdrop-blur-sm transition-all hover:border-brand-magenta/50 hover:bg-black/30"
                 >
                   <motion.div
                     whileHover={{ scale: 1.12, rotate: 6 }}

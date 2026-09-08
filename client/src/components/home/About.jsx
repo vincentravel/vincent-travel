@@ -25,16 +25,8 @@ export default function About() {
   return (
     <section id="nosotros" className="relative overflow-hidden bg-white py-24">
       <div className="pointer-events-none absolute inset-0">
-        <motion.div
-          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-          transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-20 right-0 h-80 w-80 rounded-full bg-brand-magenta/[0.06] blur-3xl"
-        />
-        <motion.div
-          animate={{ x: [0, -20, 0], y: [0, 25, 0] }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-0 -left-24 h-96 w-96 rounded-full bg-brand-violet/[0.06] blur-3xl"
-        />
+        <div className="absolute -top-20 right-0 h-80 w-80 rounded-full bg-brand-magenta/[0.06] blur-3xl" />
+        <div className="absolute bottom-0 -left-24 h-96 w-96 rounded-full bg-brand-violet/[0.06] blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-6xl px-5">

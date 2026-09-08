@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, MapPin, ChevronDown } from 'lucide-react';
 import Button from '../ui/Button';
@@ -14,26 +15,50 @@ const item = {
 };
 
 export default function Hero() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const tryPlay = () => {
+      if (video.paused) {
+        video.play().catch(() => {
+          // el navegador puede rechazar el autoplay hasta que termine de cargar; reintenta con los eventos de abajo
+        });
+      }
+    };
+
+    tryPlay();
+    video.addEventListener('loadeddata', tryPlay);
+    video.addEventListener('canplay', tryPlay);
+    document.addEventListener('visibilitychange', tryPlay);
+
+    return () => {
+      video.removeEventListener('loadeddata', tryPlay);
+      video.removeEventListener('canplay', tryPlay);
+      document.removeEventListener('visibilitychange', tryPlay);
+    };
+  }, []);
+
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden bg-brand-violet pt-28 pb-20">
       <motion.video
+        ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
         src={HERO_VIDEO_URL}
         autoPlay
         muted
         loop
         playsInline
+        preload="auto"
         initial={{ scale: 1.1, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.4, ease: 'easeOut' }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-brand-violet/80 via-brand-violet/60 to-brand-black/90" />
       <div className="pointer-events-none absolute inset-0 opacity-30">
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, 20, 0] }}
-          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-brand-magenta blur-3xl"
-        />
+        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-brand-magenta blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-3xl px-5 text-center">
