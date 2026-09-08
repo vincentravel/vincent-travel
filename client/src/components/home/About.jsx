@@ -23,12 +23,7 @@ const VALUES = [
 
 export default function About() {
   return (
-    <section id="nosotros" className="relative overflow-hidden bg-white py-24">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-20 right-0 h-80 w-80 rounded-full bg-brand-magenta/[0.06] blur-3xl" />
-        <div className="absolute bottom-0 -left-24 h-96 w-96 rounded-full bg-brand-violet/[0.06] blur-3xl" />
-      </div>
-
+    <section id="nosotros" className="relative bg-white py-24">
       <div className="relative mx-auto max-w-6xl px-5">
         <div className="grid gap-10 lg:grid-cols-[auto,1fr] lg:items-end">
           <SectionHeading
