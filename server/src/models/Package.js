@@ -14,6 +14,15 @@ const imageSchema = new mongoose.Schema(
   {
     url: { type: String, required: true },
     publicId: { type: String, required: true },
+    isCover: { type: Boolean, default: false },
+  },
+  { _id: false }
+);
+
+const videoSchema = new mongoose.Schema(
+  {
+    url: { type: String, required: true },
+    publicId: { type: String, required: true },
   },
   { _id: false }
 );
@@ -32,6 +41,7 @@ const packageSchema = new mongoose.Schema(
       required: true,
     },
     images: { type: [imageSchema], default: [] },
+    videos: { type: [videoSchema], default: [] },
     price: {
       amount: { type: Number, min: 0 },
       onRequest: { type: Boolean, default: true },
