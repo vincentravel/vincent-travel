@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { packageSchema } from '../../lib/schemas';
 import { CATEGORIES } from '../../lib/constants';
 import ImageUploader from './ImageUploader';
+import VideoUploader from './VideoUploader';
 import Button from '../ui/Button';
 
 const DEFAULTS = {
@@ -12,6 +13,7 @@ const DEFAULTS = {
   details: '',
   categories: [],
   images: [],
+  videos: [],
   onRequest: true,
   amount: '',
   isActive: true,
@@ -128,6 +130,19 @@ export default function PackageForm({ defaultValues, onSubmit, submitLabel = 'Gu
             name="images"
             render={({ field }) => (
               <ImageUploader images={field.value} onChange={field.onChange} />
+            )}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="text-sm font-medium text-brand-black/70">Videos (opcional)</label>
+        <div className="mt-2">
+          <Controller
+            control={control}
+            name="videos"
+            render={({ field }) => (
+              <VideoUploader videos={field.value} onChange={field.onChange} />
             )}
           />
         </div>
