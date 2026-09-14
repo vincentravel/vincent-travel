@@ -6,22 +6,12 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
-import { MapPin, Clock, Phone, ArrowUpRight, Plane } from 'lucide-react';
-import { InstagramIcon, FacebookIcon } from '../ui/SocialIcons';
-import TikTokIcon from '../ui/TikTokIcon';
+import { MapPin, Clock, Plane } from 'lucide-react';
 import WhatsAppIcon from '../ui/WhatsAppIcon';
 import ContactChatPreview from './ContactChatPreview';
 import Button from '../ui/Button';
 import SectionHeading from '../ui/SectionHeading';
-import { BRANCHES, SOCIAL_ACCOUNTS, WHATSAPP_NUMBER, buildWhatsAppLink, WHATSAPP_MESSAGES } from '../../lib/constants';
-
-const PLATFORM_ICONS = {
-  instagram: InstagramIcon,
-  facebook: FacebookIcon,
-  tiktok: TikTokIcon,
-};
-
-const SOCIALS = SOCIAL_ACCOUNTS.map((s) => ({ ...s, icon: PLATFORM_ICONS[s.platform] }));
+import { BRANCHES, buildWhatsAppLink, WHATSAPP_MESSAGES } from '../../lib/constants';
 
 function WhatsAppHeroCard() {
   const cardRef = useRef(null);
@@ -99,7 +89,7 @@ function WhatsAppHeroCard() {
               variant="light"
               className="px-8 py-3.5 text-base"
             >
-              +54 9 3816 37-8328
+              +54 9 3812 12-3869
             </Button>
           </motion.div>
         </div>
@@ -186,51 +176,6 @@ export default function Contact() {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-6 backdrop-blur-sm"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-magenta/20 text-brand-magentaLight">
-                <Phone className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="font-heading text-lg font-semibold text-white">Seguinos</p>
-                <a href={`tel:+${WHATSAPP_NUMBER}`} className="text-sm text-white/75 hover:text-white">
-                  +54 9 3816 37-8328
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-5 grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
-            {SOCIALS.map((s, i) => (
-              <motion.a
-                key={s.url}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, x: -12 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-                whileHover={{ x: 4 }}
-                className="group/social flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-white/10"
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-white transition-transform duration-300 group-hover/social:scale-110 group-hover/social:bg-brand-magenta">
-                  <s.icon className="h-4 w-4" />
-                </span>
-                <span className="min-w-0 flex-1 truncate text-xs text-white/70">{s.handle}</span>
-                <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-white/30 transition-colors group-hover/social:text-white/70" />
-              </motion.a>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

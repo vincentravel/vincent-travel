@@ -17,26 +17,13 @@ const VALUES = [
   {
     icon: Users,
     title: 'Grupos y familias',
-    text: 'Egresados, estudiantiles, viajes de 15 y experiencias en familia o individuales.',
+    text: 'Egresados, educativos, viajes de 15 y experiencias en familia o individuales.',
   },
 ];
 
 export default function About() {
   return (
-    <section id="nosotros" className="relative overflow-hidden bg-white py-24">
-      <div className="pointer-events-none absolute inset-0">
-        <motion.div
-          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-          transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-20 right-0 h-80 w-80 rounded-full bg-brand-magenta/[0.06] blur-3xl"
-        />
-        <motion.div
-          animate={{ x: [0, -20, 0], y: [0, 25, 0] }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-0 -left-24 h-96 w-96 rounded-full bg-brand-violet/[0.06] blur-3xl"
-        />
-      </div>
-
+    <section id="nosotros" className="relative bg-white py-24">
       <div className="relative mx-auto max-w-6xl px-5">
         <div className="grid gap-10 lg:grid-cols-[auto,1fr] lg:items-end">
           <SectionHeading
@@ -71,20 +58,16 @@ export default function About() {
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               whileHover={{ y: -6 }}
-              className="group relative overflow-hidden rounded-2xl border border-brand-violet/10 p-8 transition-all hover:border-transparent hover:shadow-xl hover:shadow-brand-violet/15"
+              className="rounded-2xl border border-brand-violet/10 p-8 shadow-sm transition-shadow hover:shadow-xl hover:shadow-brand-violet/15"
             >
-              <div className="pointer-events-none absolute inset-0 bg-brand-gradient opacity-0 transition-opacity duration-500 group-hover:opacity-[0.04]" />
               <motion.div
-                whileHover={{ scale: 1.12, rotate: -6 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 12 }}
-                className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-brand-violet text-white shadow-md shadow-brand-violet/20 transition-colors group-hover:bg-brand-magenta"
+                whileHover={{ rotate: -8, scale: 1.1 }}
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-violet text-white"
               >
                 <v.icon className="h-6 w-6" />
               </motion.div>
-              <h3 className="relative mt-5 font-heading text-lg font-semibold text-brand-black">
-                {v.title}
-              </h3>
-              <p className="relative mt-2 text-sm text-brand-black/65">{v.text}</p>
+              <h3 className="mt-5 font-heading text-lg font-semibold text-brand-black">{v.title}</h3>
+              <p className="mt-2 text-sm text-brand-black/65">{v.text}</p>
             </motion.div>
           ))}
         </div>
