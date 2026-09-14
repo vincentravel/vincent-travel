@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, MapPin, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import Button from '../ui/Button';
 import { buildWhatsAppLink, WHATSAPP_MESSAGES, HERO_VIDEO_URL } from '../../lib/constants';
 
@@ -13,6 +13,8 @@ const item = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
 };
+
+const textShadow = { textShadow: '0 2px 16px rgba(0,0,0,0.55)' };
 
 export default function Hero() {
   const videoRef = useRef(null);
@@ -56,10 +58,7 @@ export default function Hero() {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.4, ease: 'easeOut' }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-violet/80 via-brand-violet/60 to-brand-black/90" />
-      <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-brand-magenta blur-3xl" />
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/60" />
 
       <div className="relative mx-auto max-w-3xl px-5 text-center">
         <motion.div
@@ -68,27 +67,14 @@ export default function Hero() {
           animate="show"
           className="flex flex-col items-center gap-6"
         >
-          <motion.span
-            variants={item}
-            className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur"
-          >
-            <MapPin className="h-4 w-4 text-brand-magentaLight" />
-            San Miguel de Tucumán · +17 años de trayectoria
-          </motion.span>
-
           <motion.h1
             variants={item}
+            style={textShadow}
             className="font-heading text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl"
           >
             Tu próximo viaje empieza con{' '}
             <span className="whitespace-nowrap text-brand-magentaLight">Vincent Travel</span>
           </motion.h1>
-
-          <motion.p variants={item} className="max-w-xl text-lg text-white/85">
-            Egresados, viajes estudiantiles, escapadas a medida, destinos nacionales e
-            internacionales y mucho más. Te acompañamos en cada paso, como lo venimos
-            haciendo hace más de 17 años.
-          </motion.p>
 
           <motion.div variants={item} className="flex flex-wrap justify-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -98,7 +84,7 @@ export default function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Consultanos por WhatsApp
+                Consultanos
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </motion.div>

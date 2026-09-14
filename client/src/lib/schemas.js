@@ -21,6 +21,15 @@ export const packageSchema = z.object({
       z.object({
         url: z.string().url(),
         publicId: z.string().min(1),
+        isCover: z.boolean().optional().default(false),
+      })
+    )
+    .default([]),
+  videos: z
+    .array(
+      z.object({
+        url: z.string().url(),
+        publicId: z.string().min(1),
       })
     )
     .default([]),

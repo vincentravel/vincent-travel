@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, MapPin } from 'lucide-react';
+import { ArrowLeft, MapPin, Play } from 'lucide-react';
 import api from '../lib/api';
 import Button from '../components/ui/Button';
 import WhatsAppIcon from '../components/ui/WhatsAppIcon';
-import { CATEGORY_LABELS, buildWhatsAppLink, WHATSAPP_MESSAGES } from '../lib/constants';
+import SEO from '../components/seo/SEO';
+import {
+  CATEGORY_LABELS,
+  buildWhatsAppLink,
+  WHATSAPP_MESSAGES,
+  whatsappNumberForCategories,
+  getCoverImage,
+  SITE_URL,
+  LOGO_URL,
+} from '../lib/constants';
 
 export default function PackageDetailPage() {
   const { slug } = useParams();
   const [pkg, setPkg] = useState(null);
-  const [activeImage, setActiveImage] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [status, setStatus] = useState('loading');
 
   useEffect(() => {
@@ -19,7 +28,8 @@ export default function PackageDetailPage() {
       .get(`/packages/${slug}`)
       .then(({ data }) => {
         setPkg(data.package);
-        setActiveImage(0);
+        const coverIdx = data.package.images?.findIndex((img) => img.isCover) ?? -1;
+        setActiveIndex(coverIdx > 0 ? coverIdx : 0);
         setStatus('ready');
       })
       .catch(() => setStatus('error'));
@@ -40,10 +50,44 @@ export default function PackageDetailPage() {
     );
   }
 
-  const images = pkg.images?.length ? pkg.images : [null];
+  const media = [
+    ...(pkg.images || []).map((img) => ({ ...img, type: 'image' })),
+    ...(pkg.videos || []).map((vid) => ({ ...vid, type: 'video' })),
+  ];
+  const items = media.length ? media : [null];
+  const active = items[activeIndex] || items[0];
+  const coverUrl = getCoverImage(pkg)?.url || LOGO_URL;
+
+  const packageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: pkg.title,
+    description: pkg.description,
+    image: pkg.images?.map((i) => i.url) || [LOGO_URL],
+    touristType: pkg.categories?.map((c) => CATEGORY_LABELS[c] || c),
+    provider: {
+      '@type': 'TravelAgency',
+      name: 'Vincent Travel',
+      url: SITE_URL,
+    },
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'ARS',
+      price: pkg.price?.onRequest || !pkg.price?.amount ? undefined : pkg.price.amount,
+      availability: 'https://schema.org/InStock',
+      url: `${SITE_URL}/paquetes/${pkg.slug}`,
+    },
+  };
 
   return (
     <div className="min-h-screen bg-white pt-28 pb-24">
+      <SEO
+        title={pkg.title}
+        description={pkg.description?.slice(0, 160) || `Paquete de viaje a ${pkg.destination} con Vincent Travel.`}
+        path={`/paquetes/${pkg.slug}`}
+        image={coverUrl}
+        jsonLd={packageJsonLd}
+      />
       <div className="mx-auto max-w-5xl px-5">
         <Link
           to="/paquetes"
@@ -60,30 +104,46 @@ export default function PackageDetailPage() {
           className="mt-6 grid gap-10 lg:grid-cols-2"
         >
           <div>
-            <div className="flex max-h-[70vh] w-full items-center justify-center overflow-hidden rounded-2xl bg-white">
-              {images[activeImage] ? (
-                <img
-                  src={images[activeImage].url}
-                  alt={pkg.title}
-                  className="max-h-[70vh] w-full object-contain"
-                />
+            <div className="flex aspect-[4/5] w-full items-center justify-center overflow-hidden rounded-2xl bg-white lg:aspect-auto lg:h-[520px]">
+              {active ? (
+                active.type === 'video' ? (
+                  <video
+                    key={active.publicId}
+                    src={active.url}
+                    controls
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <img
+                    src={active.url}
+                    alt={pkg.title}
+                    className="h-full w-full object-contain"
+                  />
+                )
               ) : (
-                <div className="flex aspect-[4/3] w-full items-center justify-center">
-                  <span className="font-heading text-6xl font-extrabold text-brand-violet/15">V</span>
-                </div>
+                <span className="font-heading text-6xl font-extrabold text-brand-violet/15">V</span>
               )}
             </div>
-            {images.length > 1 && (
+            {items.length > 1 && (
               <div className="mt-3 flex gap-2 overflow-x-auto">
-                {images.map((img, i) => (
+                {items.map((item, i) => (
                   <button
-                    key={img?.publicId || i}
-                    onClick={() => setActiveImage(i)}
-                    className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 ${
-                      activeImage === i ? 'border-brand-magenta' : 'border-transparent'
+                    key={item?.publicId || i}
+                    onClick={() => setActiveIndex(i)}
+                    className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 ${
+                      activeIndex === i ? 'border-brand-magenta' : 'border-transparent'
                     }`}
                   >
-                    <img src={img.url} alt="" className="h-full w-full object-cover" />
+                    {item.type === 'video' ? (
+                      <>
+                        <video src={item.url} className="h-full w-full object-cover" />
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                          <Play className="h-5 w-5 text-white" fill="white" />
+                        </span>
+                      </>
+                    ) : (
+                      <img src={item.url} alt="" className="h-full w-full object-cover" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -125,7 +185,10 @@ export default function PackageDetailPage() {
 
             <Button
               as="a"
-              href={buildWhatsAppLink(WHATSAPP_MESSAGES.package(pkg.title))}
+              href={buildWhatsAppLink(
+                WHATSAPP_MESSAGES.package(pkg.title),
+                whatsappNumberForCategories(pkg.categories)
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 w-fit"

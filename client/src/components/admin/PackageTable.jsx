@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Pencil, Trash2 } from 'lucide-react';
-import { CATEGORY_LABELS } from '../../lib/constants';
+import { CATEGORY_LABELS, getCoverImage } from '../../lib/constants';
 
 function StatusBadge({ isActive }) {
   return (
@@ -52,8 +52,8 @@ export default function PackageTable({ packages, onDelete }) {
           <div key={pkg._id} className="rounded-2xl border border-brand-violet/10 bg-white p-4">
             <div className="flex items-start gap-3">
               <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white border border-brand-violet/10">
-                {pkg.images?.[0]?.url && (
-                  <img src={pkg.images[0].url} alt="" className="h-full w-full object-cover" />
+                {getCoverImage(pkg)?.url && (
+                  <img src={getCoverImage(pkg)?.url} alt="" className="h-full w-full object-cover" />
                 )}
               </div>
               <div className="min-w-0 flex-1">
@@ -89,8 +89,8 @@ export default function PackageTable({ packages, onDelete }) {
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-white border border-brand-violet/10">
-                      {pkg.images?.[0]?.url && (
-                        <img src={pkg.images[0].url} alt="" className="h-full w-full object-cover" />
+                      {getCoverImage(pkg)?.url && (
+                        <img src={getCoverImage(pkg)?.url} alt="" className="h-full w-full object-cover" />
                       )}
                     </div>
                     <div>

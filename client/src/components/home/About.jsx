@@ -17,7 +17,7 @@ const VALUES = [
   {
     icon: Users,
     title: 'Grupos y familias',
-    text: 'Egresados, estudiantiles, viajes de 15 y experiencias en familia o individuales.',
+    text: 'Egresados, educativos, viajes de 15 y experiencias en familia o individuales.',
   },
 ];
 

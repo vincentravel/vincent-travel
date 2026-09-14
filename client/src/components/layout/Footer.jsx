@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
-import { InstagramIcon, FacebookIcon } from '../ui/SocialIcons';
+import { InstagramIcon, FacebookIcon, YouTubeIcon } from '../ui/SocialIcons';
 import TikTokIcon from '../ui/TikTokIcon';
 import { SOCIAL_LINKS, BRANCHES, LOGO_URL } from '../../lib/constants';
 
@@ -61,6 +61,15 @@ export default function Footer() {
               className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-transform hover:scale-110 hover:bg-brand-magenta"
             >
               <TikTokIcon className="h-5 w-5" />
+            </a>
+            <a
+              href={SOCIAL_LINKS.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-transform hover:scale-110 hover:bg-brand-magenta"
+            >
+              <YouTubeIcon className="h-5 w-5" />
             </a>
           </div>
         </div>

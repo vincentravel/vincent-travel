@@ -1,16 +1,24 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MapPin, X } from 'lucide-react';
+import { MapPin, Play, X } from 'lucide-react';
 import Button from '../ui/Button';
 import WhatsAppIcon from '../ui/WhatsAppIcon';
-import { CATEGORY_LABELS, buildWhatsAppLink, WHATSAPP_MESSAGES } from '../../lib/constants';
+import {
+  CATEGORY_LABELS,
+  buildWhatsAppLink,
+  WHATSAPP_MESSAGES,
+  whatsappNumberForCategories,
+  getCoverImage,
+} from '../../lib/constants';
 
 export default function PackageModal({ pkg, onClose }) {
-  const [activeImage, setActiveImage] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    setActiveImage(0);
+    if (!pkg) return;
+    const coverIdx = pkg.images?.findIndex((img) => img.isCover) ?? -1;
+    setActiveIndex(coverIdx > 0 ? coverIdx : 0);
   }, [pkg]);
 
   useEffect(() => {
@@ -27,7 +35,12 @@ export default function PackageModal({ pkg, onClose }) {
 
   if (!pkg) return null;
 
-  const images = pkg.images?.length ? pkg.images : [null];
+  const media = [
+    ...(pkg.images || []).map((img) => ({ ...img, type: 'image' })),
+    ...(pkg.videos || []).map((vid) => ({ ...vid, type: 'video' })),
+  ];
+  const items = media.length ? media : [null];
+  const active = items[activeIndex] || items[0];
 
   return createPortal(
     <AnimatePresence>
@@ -58,30 +71,46 @@ export default function PackageModal({ pkg, onClose }) {
 
           <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-2">
             <div>
-              <div className="flex max-h-[65vh] w-full items-center justify-center overflow-hidden rounded-2xl bg-white">
-                {images[activeImage] ? (
-                  <img
-                    src={images[activeImage].url}
-                    alt={pkg.title}
-                    className="max-h-[65vh] w-full object-contain"
-                  />
+              <div className="flex aspect-[4/5] w-full items-center justify-center overflow-hidden rounded-2xl bg-white lg:aspect-auto lg:h-[460px]">
+                {active ? (
+                  active.type === 'video' ? (
+                    <video
+                      key={active.publicId}
+                      src={active.url}
+                      controls
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <img
+                      src={active.url}
+                      alt={pkg.title}
+                      className="h-full w-full object-contain"
+                    />
+                  )
                 ) : (
-                  <div className="flex aspect-[4/3] w-full items-center justify-center">
-                    <span className="font-heading text-6xl font-extrabold text-brand-violet/15">V</span>
-                  </div>
+                  <span className="font-heading text-6xl font-extrabold text-brand-violet/15">V</span>
                 )}
               </div>
-              {images.length > 1 && (
+              {items.length > 1 && (
                 <div className="mt-3 flex gap-2 overflow-x-auto">
-                  {images.map((img, i) => (
+                  {items.map((item, i) => (
                     <button
-                      key={img?.publicId || i}
-                      onClick={() => setActiveImage(i)}
-                      className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 ${
-                        activeImage === i ? 'border-brand-magenta' : 'border-transparent'
+                      key={item?.publicId || i}
+                      onClick={() => setActiveIndex(i)}
+                      className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 ${
+                        activeIndex === i ? 'border-brand-magenta' : 'border-transparent'
                       }`}
                     >
-                      <img src={img.url} alt="" className="h-full w-full object-cover" />
+                      {item.type === 'video' ? (
+                        <>
+                          <video src={item.url} className="h-full w-full object-cover" />
+                          <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                            <Play className="h-5 w-5 text-white" fill="white" />
+                          </span>
+                        </>
+                      ) : (
+                        <img src={item.url} alt="" className="h-full w-full object-cover" />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -130,7 +159,10 @@ export default function PackageModal({ pkg, onClose }) {
 
               <Button
                 as="a"
-                href={buildWhatsAppLink(WHATSAPP_MESSAGES.package(pkg.title))}
+                href={buildWhatsAppLink(
+                  WHATSAPP_MESSAGES.package(pkg.title),
+                  whatsappNumberForCategories(pkg.categories)
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-2 w-fit"

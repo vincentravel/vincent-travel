@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { MapPin, ArrowUpRight } from 'lucide-react';
-import { CATEGORY_LABELS } from '../../lib/constants';
+import { CATEGORY_LABELS, getCoverImage } from '../../lib/constants';
 
 export default function PackageCard({ pkg, index = 0, onOpen }) {
-  const cover = pkg.images?.[0]?.url;
+  const cover = getCoverImage(pkg)?.url;
 
   return (
     <motion.div
