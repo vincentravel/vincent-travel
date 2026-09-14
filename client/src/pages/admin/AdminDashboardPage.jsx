@@ -52,7 +52,7 @@ export default function AdminDashboardPage() {
       text: 'Esta acción no se puede deshacer.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#E6007E',
+      confirmButtonColor: '#E6167E',
       cancelButtonColor: '#6b7280',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',

@@ -8,6 +8,7 @@ import api from '../../lib/api';
 import { useAuthStore } from '../../store/authStore';
 import Button from '../../components/ui/Button';
 import { LOGO_URL, HERO_VIDEO_URL } from '../../lib/constants';
+import SEO from '../../components/seo/SEO';
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="grid min-h-screen bg-white md:grid-cols-2">
+      <SEO title="Iniciar sesión" noindex />
       <div className="relative hidden overflow-hidden md:block">
         <video
           className="absolute inset-0 h-full w-full object-cover"

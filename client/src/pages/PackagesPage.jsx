@@ -5,7 +5,9 @@ import CategoryFilters from '../components/packages/CategoryFilters';
 import PackageGrid from '../components/packages/PackageGrid';
 import PackageModal from '../components/packages/PackageModal';
 import Pagination from '../components/ui/Pagination';
+import SEO from '../components/seo/SEO';
 import { usePackageStore } from '../store/packageStore';
+import { CATEGORY_LABELS } from '../lib/constants';
 
 const PAGE_SIZE = 9;
 
@@ -62,8 +64,19 @@ export default function PackagesPage() {
     setSearchParams(next);
   };
 
+  const categoryLabel = category ? CATEGORY_LABELS[category] : null;
+
   return (
     <div className="min-h-screen bg-white pt-32 pb-24">
+      <SEO
+        title={categoryLabel ? categoryLabel : 'Paquetes de Viaje'}
+        description={
+          categoryLabel
+            ? `Paquetes de ${categoryLabel.toLowerCase()} con Vincent Travel. Consultá fechas, precios y disponibilidad.`
+            : 'Catálogo completo de paquetes de viaje de Vincent Travel: egresados, educativos, nacionales, internacionales y de 15.'
+        }
+        path={category ? `/paquetes?categoria=${category}` : '/paquetes'}
+      />
       <div id="catalogo-top" className="mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="Catálogo"
