@@ -4,8 +4,15 @@ import { Link } from 'react-router-dom';
 import SectionHeading from '../ui/SectionHeading';
 import { InstagramIcon, FacebookIcon, YouTubeIcon } from '../ui/SocialIcons';
 import TikTokIcon from '../ui/TikTokIcon';
+import WhatsAppIcon from '../ui/WhatsAppIcon';
 import { usePackageStore } from '../../store/packageStore';
-import { SOCIAL_ACCOUNTS, getCoverImage } from '../../lib/constants';
+import {
+  SOCIAL_ACCOUNTS,
+  getCoverImage,
+  buildWhatsAppLink,
+  WHATSAPP_MESSAGES,
+  whatsappNumberForCategories,
+} from '../../lib/constants';
 
 const PLATFORM_ICONS = {
   instagram: InstagramIcon,
@@ -21,6 +28,7 @@ const PLATFORM_HOVER = {
   facebook: 'hover:border-transparent hover:bg-[#1877F2]',
   tiktok: 'hover:border-transparent hover:bg-[#FE2C55]',
   youtube: 'hover:border-transparent hover:bg-[#FF0000]',
+  whatsapp: 'hover:border-transparent hover:bg-[#25D366]',
 };
 
 const ROTATE_MS = 4500;
@@ -120,25 +128,35 @@ function ServiceCard({ s, i, images }) {
         </h3>
       </Link>
 
-      {accounts.length > 0 && (
-        <div className="relative mx-7 mb-6 mt-auto flex flex-wrap gap-2">
-          {accounts.map((acc) => {
-            const Icon = PLATFORM_ICONS[acc.platform];
-            return (
-              <a
-                key={acc.url}
-                href={acc.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${acc.platform}: ${acc.handle}`}
-                className={`flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-white/15 text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 hover:text-white hover:shadow-lg ${PLATFORM_HOVER[acc.platform]}`}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            );
-          })}
-        </div>
-      )}
+      <div className="relative mx-7 mb-6 mt-auto flex flex-wrap gap-2">
+        <a
+          href={buildWhatsAppLink(
+            WHATSAPP_MESSAGES.service(s.title),
+            whatsappNumberForCategories(s.category ? [s.category] : [])
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Consultar por WhatsApp: ${s.title}`}
+          className={`flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-white/15 text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 hover:text-white hover:shadow-lg ${PLATFORM_HOVER.whatsapp}`}
+        >
+          <WhatsAppIcon className="h-4 w-4" />
+        </a>
+        {accounts.map((acc) => {
+          const Icon = PLATFORM_ICONS[acc.platform];
+          return (
+            <a
+              key={acc.url}
+              href={acc.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${acc.platform}: ${acc.handle}`}
+              className={`flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-white/15 text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 hover:text-white hover:shadow-lg ${PLATFORM_HOVER[acc.platform]}`}
+            >
+              <Icon className="h-4 w-4" />
+            </a>
+          );
+        })}
+      </div>
     </motion.div>
   );
 }

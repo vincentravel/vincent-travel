@@ -48,6 +48,7 @@ export const WHATSAPP_MESSAGES = {
   general: 'Hola Vincent Travel! Quiero recibir información sobre sus viajes.',
   contacto: 'Hola! Vengo de la página web y quiero hacer una consulta.',
   package: (title) => `Hola! Me interesa el paquete "${title}". ¿Me pasan más información?`,
+  service: (title) => `Hola! Quiero información sobre ${title}.`,
 };
 
 export const BRANCHES = [
