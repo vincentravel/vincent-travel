@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { uploadImage, deleteImage } = require('../controllers/upload.controller');
+const { uploadImage, deleteImage, getVideoUploadSignature, deleteVideo } = require('../controllers/upload.controller');
 const { protect } = require('../middlewares/auth.middleware');
 
 const upload = multer({
@@ -17,6 +17,8 @@ const upload = multer({
 const router = express.Router();
 
 router.post('/', protect, upload.single('image'), uploadImage);
+router.delete('/video/:publicId', protect, deleteVideo);
 router.delete('/:publicId', protect, deleteImage);
+router.get('/video-signature', protect, getVideoUploadSignature);
 
 module.exports = router;

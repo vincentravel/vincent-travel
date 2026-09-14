@@ -15,6 +15,10 @@ const packageValidator = [
   body('images').optional().isArray().withMessage('Las imágenes deben ser una lista'),
   body('images.*.url').optional().isString(),
   body('images.*.publicId').optional().isString(),
+  body('images.*.isCover').optional().isBoolean().toBoolean(),
+  body('videos').optional().isArray().withMessage('Los videos deben ser una lista'),
+  body('videos.*.url').optional().isString(),
+  body('videos.*.publicId').optional().isString(),
   body('price.onRequest').optional().isBoolean().toBoolean(),
   body('price.amount')
     .optional({ checkFalsy: true })
