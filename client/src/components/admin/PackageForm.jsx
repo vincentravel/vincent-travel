@@ -4,6 +4,7 @@ import { packageSchema } from '../../lib/schemas';
 import { CATEGORIES } from '../../lib/constants';
 import ImageUploader from './ImageUploader';
 import VideoUploader from './VideoUploader';
+import PdfUploader from './PdfUploader';
 import Button from '../ui/Button';
 
 const DEFAULTS = {
@@ -14,6 +15,7 @@ const DEFAULTS = {
   categories: [],
   images: [],
   videos: [],
+  pdfs: [],
   onRequest: true,
   amount: '',
   isActive: true,
@@ -144,6 +146,23 @@ export default function PackageForm({ defaultValues, onSubmit, submitLabel = 'Gu
             render={({ field }) => (
               <VideoUploader videos={field.value} onChange={field.onChange} />
             )}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="text-sm font-medium text-brand-black/70">
+          Documentos del viaje (opcional)
+        </label>
+        <p className="mt-0.5 text-xs text-brand-black/40">
+          Itinerarios, información general, etc. Los pasajeros van a poder verlos y descargarlos
+          desde la página del paquete.
+        </p>
+        <div className="mt-2">
+          <Controller
+            control={control}
+            name="pdfs"
+            render={({ field }) => <PdfUploader pdfs={field.value} onChange={field.onChange} />}
           />
         </div>
       </div>

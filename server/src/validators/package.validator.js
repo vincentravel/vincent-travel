@@ -19,6 +19,10 @@ const packageValidator = [
   body('videos').optional().isArray().withMessage('Los videos deben ser una lista'),
   body('videos.*.url').optional().isString(),
   body('videos.*.publicId').optional().isString(),
+  body('pdfs').optional().isArray().withMessage('Los archivos deben ser una lista'),
+  body('pdfs.*.url').optional().isString(),
+  body('pdfs.*.publicId').optional().isString(),
+  body('pdfs.*.name').optional().isString(),
   body('price.onRequest').optional().isBoolean().toBoolean(),
   body('price.amount')
     .optional({ checkFalsy: true })

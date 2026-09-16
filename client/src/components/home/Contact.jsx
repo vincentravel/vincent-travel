@@ -173,6 +173,16 @@ export default function Contact() {
                 <Clock className="h-3.5 w-3.5 mt-0.5 shrink-0" />
                 {b.hours}
               </p>
+
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 px-4 py-2 text-xs font-semibold text-white transition-colors hover:border-brand-magentaLight hover:bg-brand-magenta/20 hover:text-brand-magentaLight"
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                Cómo llegar
+              </a>
             </motion.div>
           ))}
         </div>

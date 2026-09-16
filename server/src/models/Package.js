@@ -27,6 +27,15 @@ const videoSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const pdfSchema = new mongoose.Schema(
+  {
+    url: { type: String, required: true },
+    publicId: { type: String, required: true },
+    name: { type: String, trim: true, default: '' },
+  },
+  { _id: false }
+);
+
 const packageSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
@@ -42,6 +51,7 @@ const packageSchema = new mongoose.Schema(
     },
     images: { type: [imageSchema], default: [] },
     videos: { type: [videoSchema], default: [] },
+    pdfs: { type: [pdfSchema], default: [] },
     price: {
       amount: { type: Number, min: 0 },
       onRequest: { type: Boolean, default: true },

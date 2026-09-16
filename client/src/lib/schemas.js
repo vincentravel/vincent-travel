@@ -33,6 +33,15 @@ export const packageSchema = z.object({
       })
     )
     .default([]),
+  pdfs: z
+    .array(
+      z.object({
+        url: z.string().url(),
+        publicId: z.string().min(1),
+        name: z.string().optional().default(''),
+      })
+    )
+    .default([]),
   onRequest: z.boolean().default(true),
   amount: z
     .union([z.string(), z.number()])

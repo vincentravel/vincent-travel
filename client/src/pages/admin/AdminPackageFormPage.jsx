@@ -26,6 +26,7 @@ export default function AdminPackageFormPage() {
           categories: pkg.categories,
           images: pkg.images,
           videos: pkg.videos || [],
+          pdfs: pkg.pdfs || [],
           onRequest: pkg.price?.onRequest ?? true,
           amount: pkg.price?.amount ?? '',
           isActive: pkg.isActive,
@@ -59,6 +60,7 @@ export default function AdminPackageFormPage() {
       categories: values.categories,
       images: values.images,
       videos: values.videos,
+      pdfs: values.pdfs,
       isActive: values.isActive,
       price: {
         onRequest: values.onRequest,

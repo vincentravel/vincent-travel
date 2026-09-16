@@ -8,13 +8,19 @@ const { notFound, errorHandler } = require('./middlewares/error.middleware');
 
 const app = express();
 
-const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:5173']
+const allowedOrigins = [process.env.CLIENT_URL]
   .filter(Boolean)
   .map((url) => url.replace(/\/+$/, ''));
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Sin origin (ej: curl/Postman) o algún localhost:PUERTO en desarrollo, siempre permitido.
+      if (!origin || /^http:\/\/localhost:\d+$/.test(origin) || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error('No permitido por CORS'));
+    },
     credentials: true,
   })
 );
