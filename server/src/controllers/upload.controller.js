@@ -56,4 +56,46 @@ const deleteVideo = asyncHandler(async (req, res) => {
   res.json({ message: 'Video eliminado' });
 });
 
-module.exports = { uploadImage, deleteImage, getVideoUploadSignature, deleteVideo };
+function uploadPdfBuffer(buffer, filename) {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'vincent-travel/packages/pdfs',
+        resource_type: 'raw',
+        // Sin esto Cloudinary genera un public_id random sin el .pdf, y algunos
+        // navegadores no ofrecen el nombre/extensión correctos al descargar.
+        use_filename: true,
+        filename_override: filename,
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
+}
+
+const uploadPdf = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No se recibió ningún archivo' });
+  }
+
+  const result = await uploadPdfBuffer(req.file.buffer, req.file.originalname);
+  res.status(201).json({ url: result.secure_url, publicId: result.public_id, name: req.file.originalname });
+});
+
+const deletePdf = asyncHandler(async (req, res) => {
+  const { publicId } = req.params;
+  await cloudinary.uploader.destroy(decodeURIComponent(publicId), { resource_type: 'raw' });
+  res.json({ message: 'Archivo eliminado' });
+});
+
+module.exports = {
+  uploadImage,
+  deleteImage,
+  getVideoUploadSignature,
+  deleteVideo,
+  uploadPdf,
+  deletePdf,
+};

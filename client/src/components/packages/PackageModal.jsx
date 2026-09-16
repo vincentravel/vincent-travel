@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MapPin, Play, X } from 'lucide-react';
+import { FileText, MapPin, Play, X } from 'lucide-react';
 import Button from '../ui/Button';
 import WhatsAppIcon from '../ui/WhatsAppIcon';
 import {
@@ -148,6 +148,26 @@ export default function PackageModal({ pkg, onClose }) {
               {pkg.details && (
                 <div className="rounded-xl bg-brand-violet/5 p-4 text-sm text-brand-black/70">
                   {pkg.details}
+                </div>
+              )}
+
+              {pkg.pdfs?.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-brand-black/50">
+                    Documentos
+                  </h3>
+                  {pkg.pdfs.map((pdf) => (
+                    <a
+                      key={pdf.publicId}
+                      href={pdf.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 rounded-xl border border-brand-violet/15 px-3 py-2 text-sm font-medium text-brand-violet transition-colors hover:border-brand-magenta hover:text-brand-magenta"
+                    >
+                      <FileText className="h-4 w-4 shrink-0" />
+                      {pdf.name || 'Ver documento'}
+                    </a>
+                  ))}
                 </div>
               )}
 
