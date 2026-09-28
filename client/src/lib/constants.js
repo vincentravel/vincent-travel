@@ -55,12 +55,12 @@ export const BRANCHES = [
   {
     name: 'Casa Central',
     address: '9 de Julio 188, San Miguel de Tucumán',
-    hours: 'Lunes a Viernes de 9 a 13 y de 17 a 21 hs · Sábados de 9 a 13 hs',
+    hours: 'Lunes a Viernes de 9 a 13 y de 16 a 20 hs · Sábados de 9 a 13 hs',
   },
   {
     name: 'Sucursal Concepción',
     address: 'Alfonsín 1445, Concepción, Tucumán',
-    hours: 'Lunes a Viernes de 9 a 13 y de 17 a 21 hs',
+    hours: 'Lunes a Viernes de 8:30 a 12:30 y de 16 a 20 hs',
   },
 ];
 
